@@ -36,10 +36,9 @@ object MyEither {
 
   // returns user's best friend
   def findBestFriend(user: MeetupGuest): Either[UnbelievableError, MeetupGuest] =
-    user.bestFriend match {
-      case Some(id) => findMeetupGuest(id)
-      case _ => Left(FindBestfriendError(user.id, s"no besfriend found for ${user.name}[${user.id}] in findMeetupGuest"))
-    }
+    user.bestFriend
+        .map(findMeetupGuest)
+        .getOrElse(Left(FindBestfriendError(user.id, s"no besfriend found for ${user.name}[${user.id}] in findMeetupGuest")))
 
   val scala = "scala"
   val java = "java"
